@@ -12,7 +12,7 @@ function Login() {
   }
 
   return (
-    <div className='d-flex justify-content-center' style={{ marginTop: "100px" }}>
+    <div className='d-flex justify-content-center mt-5'>
       <div className='col-md-4'>
         <div className='card'>
           <div className='card-header'>
@@ -22,15 +22,15 @@ function Login() {
             <form autoComplete='off' onSubmit={login}>
               <div className='form-group'>
                 Email
-                <input required email className='form-control' />
+                <input type="email" required email className='form-control' />
               </div>
               <div className='form-group mt-2'>
                 Password
-                <input required className='form-control' />
+                <input type="password" required className='form-control' />
               </div>
               <div className='form-group mt-2'>
                 <button type="submit" className='btn btn-primary w-100'>
-                  Sign In
+                  Login
                 </button>
               </div>
             </form>
