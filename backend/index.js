@@ -4,6 +4,7 @@ const app = express();
 const { v4: uuidv4 } = require("uuid");
 const multer = require("multer");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 app.use(express.json());
 app.use(cors());
@@ -40,6 +41,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
+const secretKey = "Secret key secret key 12345";
+const options = {
+    expiresIn: "1h"
+}
+
 app.post("/api/register", upload.single("avatar"), async (req, res) => {
     try {
         const {name, email, password} = req.body;
@@ -50,8 +56,17 @@ app.post("/api/register", upload.single("avatar"), async (req, res) => {
             password: password,
             avatar: req.file
         });
+
+        const result = await user.save();
+
+        const payload = {
+            user: result
+        }
+
+        const token = jwt.sign(payload, secretKey, options);
+        res.json({token, user:result});      
     } catch (error) {
-        
+        res.status(500).json({message: error.message});
     }
 })
 
