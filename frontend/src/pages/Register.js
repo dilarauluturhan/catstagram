@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Register() {
   const [name, setName] = useState("");
@@ -17,6 +18,12 @@ function Register() {
     formData.append("avatar", avatar, avatar.name);
 
     //api isteği
+    axios.post("http://localhost:5000/api/register", formData)
+    .then(res => {
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      navigate("/");
+    })
     navigate("/");
   }
 
@@ -35,7 +42,7 @@ function Register() {
               </div>
               <div className="form-group mt-2">
                 Email
-                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" required email />
+                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" required email="true" />
               </div>
               <div className="form-group mt-2">
                 Password

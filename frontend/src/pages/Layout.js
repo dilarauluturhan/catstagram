@@ -10,6 +10,11 @@ function Layout() {
         }
     }
 
+    const logout = () => {
+        localStorage.clear();
+        navigate("/login");
+    }
+
     useEffect(() => {
         checkLogin();
     }, [])
@@ -25,7 +30,7 @@ function Layout() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         </ul>
-                        <Link to="/login" className="btn btn-outline-danger">Çıkış Yap</Link>
+                        <a onClick={logout} className="btn btn-outline-danger">Çıkış Yap</a>
                     </div>
                 </div>
             </nav>
