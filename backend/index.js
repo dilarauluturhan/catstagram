@@ -31,15 +31,15 @@ const User = mongoose.model("User", userSchema);
 
 // dosyayı kaydedeceğimiz bir yapıya ihtiyacımız var
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, "uploads/")
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname)
     }
 });
 
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 const secretKey = "Secret key secret key 12345";
 const options = {
@@ -49,7 +49,7 @@ const options = {
 /* REGISTER */
 app.post("/api/register", upload.single("avatar"), async (req, res) => {
     try {
-        const {name, email, password} = req.body;
+        const { name, email, password } = req.body;
         const user = new User({
             _id: uuidv4(),
             name: name,
@@ -65,30 +65,59 @@ app.post("/api/register", upload.single("avatar"), async (req, res) => {
         }
 
         const token = jwt.sign(payload, secretKey, options);
-        res.json({token, user:result});      
+        res.json({ token, user: result });
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 })
 /* REGISTER */
 
 /* LOG IN */
-app.post("/api/login", async (req,res) => {
+app.post("/api/login", async (req, res) => {
     try {
-        const {email, password} = req.body;
-        const user = await User.findOne({email: email, password: password});
-        if(user == null) {
-            res.status(403).json({message: "Mail adresi veya şifre yanlış!"})
-        }else{
+        const { email, password } = req.body;
+        const user = await User.findOne({ email: email, password: password });
+        if (user == null) {
+            res.status(403).json({ message: "Mail adresi veya şifre yanlış!" })
+        } else {
             const payload = {}
             const token = jwt.sign(payload, secretKey, options);
 
-            res.json({token: token, user: user});
+            res.json({ token: token, user: user });
         }
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 })
 /* LOG IN */
+
+/* FOR POST */
+// post'un şeması
+const postSchema = new mongoose.Schema({
+    _id: String,
+    userId: String,
+    content: String,
+    createdDate: String
+});
+
+const Post = mongoose.model("Post", postSchema);
+// post'u kaydedecek metot
+app.post("/api/post", async (req, res) => {
+    try {
+        const { userId, content } = req.body;
+        const post = new Post({
+            _id: uuidv4(),
+            userId: userId,
+            content: content,
+            createdDate: new Date()
+        });
+
+        await post.save();
+        res.json({ message: "Post shared!" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+/* FOR POST */
 
 app.listen(5000, () => console.log("Sunucu 5000 port üzerinden ayağa kalktı!"))
