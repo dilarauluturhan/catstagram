@@ -8,7 +8,7 @@ const connection = () => {
         useUnifiedTopology: true
     })
         .then(() => console.log("MongoDb bağlantısı başarılı!"))
-        .catch((err) => console.log("err " + err.message));
+        .catch((err) => console.log("err: " + err.message));
 }
 
-module.exports = connection();
+module.exports = connection;
