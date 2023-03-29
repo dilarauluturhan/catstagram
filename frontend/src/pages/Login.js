@@ -12,7 +12,7 @@ function Login() {
     //api isteği
     axios.post("http://localhost:5000/api/login", { email: email, password: password })
       .then(res => {
-        localStorage.setItem("token", JSON.stringify(res.data.token));
+        localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
         navigate("/");
       })

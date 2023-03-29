@@ -23,7 +23,7 @@ function Register() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/");
-    })
+    });
     navigate("/");
   }
 
