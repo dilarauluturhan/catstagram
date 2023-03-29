@@ -26,7 +26,7 @@ function Login() {
       <div className="col-md-4">
         <div className="card">
           <div className="card-header">
-            <h1 className="text-center">Login Page</h1>
+            <h1 className="text-center">Log in Page</h1>
           </div>
           <div className="card-body">
             <form autoComplete="off" onSubmit={login}>
@@ -40,7 +40,7 @@ function Login() {
               </div>
               <div className="form-group mt-2">
                 <button type="submit" className="btn btn-primary w-100">
-                  Login
+                  Log in
                 </button>
               </div>
             </form>
