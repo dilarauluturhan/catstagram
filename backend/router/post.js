@@ -35,8 +35,7 @@ router.get("/posts", async (req, res) => {
                     as: "users"
                 }
             }
-            // tarihi sondan başa sıralar
-        ]).sort({ createdDate: -1 }); 
+        ]).sort({ createdDate: -1 }); // tarihi sondan başa sıralar
 
         res.json(posts);
     } catch (error) {

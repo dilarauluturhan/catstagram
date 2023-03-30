@@ -20,8 +20,7 @@ router.post("/register", upload.single("avatar"), async (req, res) => {
         const result = await user.save();
 
         const token = createToken;
-
-        res.json({ token: token, user: result });
+        res.json({ token, user: result });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
