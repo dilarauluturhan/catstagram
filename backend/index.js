@@ -5,9 +5,14 @@ const { v4: uuidv4 } = require("uuid");
 const multer = require("multer");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+// resim dosyalarını okuma için izin ver
+const path = require("path");
 
 app.use(express.json());
 app.use(cors());
+
+// resim dosyalarını okuma için izin ver
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const url = "mongodb+srv://MongoDb:1@socialmedia.phnpzbe.mongodb.net/?retryWrites=true&w=majority";
 
@@ -119,5 +124,26 @@ app.post("/api/post", async (req, res) => {
     }
 });
 /* FOR POST */
+
+/* GET POST */
+app.get("/api/posts", async (req, res) => {
+    try {
+        const posts = await Post.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "users"
+                }
+            }
+        ]).sort({ createdDate: -1 }); // -1 dersem tarihi sondan başa doğru sıralar
+
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+/* GET POST */
 
 app.listen(5000, () => console.log("Sunucu 5000 port üzerinden ayağa kalktı!"))
