@@ -10,7 +10,7 @@ function Home() {
     e.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"));
     axios.post(apiUrl + "/api/post", { userId: user._id, content: content })
-      .then(async (res) => {
+      .then(async res => {
         await getPosts();
         alert(res.data.message);
         setContent("");
@@ -51,14 +51,16 @@ function Home() {
         {
           posts.map((val, index) => {
             return (
-              <div key={index} className="card mt-3">
-                <div className="card-body">
-                  <img src={apiUrl + "/" + val.users[0].avatar.path}
-                    style={{ width: "50px", height: "50px", borderRadius: "50px" }} />
-                  <h5>{val.users[0].name} - {val.createdDate}</h5>
-                  <p>{val.content}</p>
+              <>
+                <div key={index} className="card mt-3">
+                  <div className="card-body">
+                    <img src={apiUrl + "/" + val.users[0].avatar.path}
+                      style={{ width: "50px", height: "50px", borderRadius: "50px" }} />
+                    <h5>{val.users[0].name} - {val.createdDate}</h5>
+                    <p>{val.content}</p>
+                  </div>
                 </div>
-              </div>
+              </>
             )
           })
         }

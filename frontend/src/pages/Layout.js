@@ -3,10 +3,8 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 
 function Layout() {
     const navigate = useNavigate();
-
     const checkLogin = () => {
         let token = localStorage.getItem("token");
-        
         if (token == null) {
             navigate("/login");
         }
