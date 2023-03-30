@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import apiUrl from '../env';
 
 function Home() {
   const [content, setContent] = useState("");
-  const [posts, setPosts] = useState([]);
 
   const addPost = (e) => {
     e.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"));
-    axios.post(apiUrl + "/api/post", { userId: user._id, content: content })
-      .then(async res => {
-        await getPosts();
+    axios.post("http://localhost:5000/api/post", { userId: user._id, content: content })
+      .then(res => {
         alert(res.data.message);
         setContent("");
       })
@@ -19,19 +16,6 @@ function Home() {
         console.log(err.data);
       });
   }
-
-  // getPosts metodunu useEffect'in içerisinde çağırıyorum
-  // Bu sayede uygulamam bir defa çalıştığında api isteğim gerçekleşecek
-  const getPosts = async () => {
-    axios.get(apiUrl + "/api/posts")
-      .then(res => {
-        setPosts(res.data);
-      });
-  }
-
-  useEffect(() => {
-    getPosts();
-  }, [])
 
   return (
     <div className="d-flex justify-content-center mt-5">
@@ -48,22 +32,18 @@ function Home() {
             </form>
           </div>
         </div>
-        {
-          posts.map((val, index) => {
-            return (
-              <>
-                <div key={index} className="card mt-3">
-                  <div className="card-body">
-                    <img src={apiUrl + "/" + val.users[0].avatar.path}
-                      style={{ width: "50px", height: "50px", borderRadius: "50px" }} />
-                    <h5>{val.users[0].name} - {val.createdDate}</h5>
-                    <p>{val.content}</p>
-                  </div>
-                </div>
-              </>
-            )
-          })
-        }
+        <div className="card mt-3">
+          <div className="card-body">
+            <h5>Dilara Uluturhan - 28.03.2023 21:51</h5>
+            <p>Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet</p>
+          </div>
+        </div>
+        <div className="card mt-3">
+          <div className="card-body">
+            <h5>Dilara Uluturhan - 28.03.2023 21:51</h5>
+            <p>Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet</p>
+          </div>
+        </div>
       </div>
     </div>
   )
